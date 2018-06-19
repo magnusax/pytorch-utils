@@ -21,7 +21,9 @@ from torchvision import datasets, models, transforms
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
+
 def count_params(model, want=False):
+    """Count the number of trainable parameters"""
     total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     if want: 
         return total_params
@@ -29,6 +31,13 @@ def count_params(model, want=False):
         print("Number of trainable params =", total_params)
         return None
 
+    
+    
+def get_lr(optimizer):
+    """Fetch learning rate from optimizer"""
+    return optimizer.state_dict()['param_groups'][0]['lr']
+    
+    
     
 def train_model(model, criterion, optimizer, scheduler=None, num_epochs=25):
     """
